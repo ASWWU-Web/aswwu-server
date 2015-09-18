@@ -188,7 +188,8 @@
         $this->year = "".sprintf("%04d",$y);
       }
 
-      $this->view_levels[3] = ["id","user_id","updated_at"];
+      $this->view_levels[4] = [];
+      $this->view_levels[3] = array_merge(["id","user_id","updated_at"],$this->view_levels[3]);
       $this->view_levels[2] = array_merge(["wwuid"],$this->view_levels[3]);
       $this->view_levels[1] = array_merge(["gender"],$this->view_levels[2]);
       $this->view_levels[0] = array_merge(["birthday","email","phone","website"],$this->view_levels[1]);
@@ -219,7 +220,7 @@
           unset($_POST["profile_data"]);
         }
 
-        foreach ($this->view_levels[$this->pn] as $column)
+        foreach ($this->view_levels[($this->pn+1)] as $column)
           unset($result[$column]);
         foreach ($result as $key => $value)
           $this->data[$key] = $value;
