@@ -10,8 +10,8 @@
 	require_once("search.php");
 
 	$db = [
-		"people" => new DataBase($root."data/people.db"),
-		"archives" => new DataBase($root."data/archives.db")
+		"people" => new DataBase($root."people.db"),
+		"archives" => new DataBase($root."archives.db")
 	];
 
 	$current_year = 1516;
