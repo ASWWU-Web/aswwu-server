@@ -3,7 +3,7 @@
 	header("Access-Control-Allow-Origin: *");
 	error_reporting(E_ALL);
 
-  $root = "/data/databases/";
+  $root = "../databases/";
   ini_set("date.timezone","America/Los_Angeles");
 
 	require_once("classes.php");
