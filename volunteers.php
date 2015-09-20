@@ -13,7 +13,6 @@
 			$volunteer_info = $db["people"]->select("volunteers","*","user_id=".$user->id)[0];
 		}
 		if (isset($_POST["volunteer_data"])) {
-			print_r($_POST["volunteer_data"]); die;
 			$db["people"]->update("volunteers",$_POST["volunteer_data"],"user_id=".$user->id);
 			$volunteer_info = $db["people"]->select("volunteers","*","user_id=".$user->id)[0];
 		}
