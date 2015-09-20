@@ -2,8 +2,7 @@
 
 	if (isset($user) && $user->verify()) {
 		$volunteer_info = $db["people"]->select("volunteers","*","user_id=".$user->id);
-		echo json_encode($volunteer_info); die;
-		if ($volunteer_info[0])
+		if ($volunteer_info && $volunteer_info[0])
 			$volunteer_info = $volunteer_info[0];
 		else {
 			$db["people"]->insert("volunteers",[
@@ -13,6 +12,7 @@
 			]);
 			$volunteer_info = $db["people"]->select("volunteers","*","user_id=".$user->id)[0];
 		}
+		echo json_encode($volunteer_info); die;
 		if (isset($_POST["volunteer_data"])) {
 			$volunteer_data = json_decode($_POST["volunteer_data"]);
 			$db["people"]->update("volunteers",$volunteer_data,"user_id=".$user->id);
