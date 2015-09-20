@@ -18,6 +18,6 @@
 			$volunteer_info = $db["people"]->select("volunteers","*","user_id='".$user->id."'")[0];
 		}
 	}
-	echo json_encode($volunteer_info); die;
+	$data["volunteer_info"] = $volunteer_info;
 
 ?>
