@@ -1,7 +1,7 @@
 <?php
 
 	header("Access-Control-Allow-Origin: *");
-	error_reporting(E_ALL);
+	error_reporting(E_ERROR);
 
   $root = "../databases/";
   ini_set("date.timezone","America/Los_Angeles");

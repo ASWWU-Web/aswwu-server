@@ -205,7 +205,7 @@
       if ($result) {
         $result = $result[0];
         if (isset($user) && $user->verify()) {
-          if (isset($user->roles))// && ("admin", $user->roles))
+          if (isset($user->roles) && in_array("admin", $user->roles))
             $this->pn = 3;
           else if ($user->id == $result["user_id"])
             $this->pn = 2;
@@ -213,17 +213,26 @@
             $this->pn = 1;
         }
 
-        if (isset($_POST["profile_data"])) {
+        if (isset($_POST["profile_data"]) && $this->pn >= 2) {
           if ($temp = json_decode($_POST["profile_data"]))
             if ($profile_data = get_object_vars($temp))
               $this->update($profile_data);
           unset($_POST["profile_data"]);
         }
 
-        foreach ($this->view_levels[($this->pn+1)] as $column)
-          unset($result[$column]);
-        foreach ($result as $key => $value)
-          $this->data[$key] = $value;
+        if ($this->pn >= $result["privacy"]) {
+          foreach ($this->view_levels[($this->pn+1)] as $column)
+            unset($result[$column]);
+          foreach ($result as $key => $value)
+            $this->data[$key] = $value;
+        } else {
+          $this->data = [
+            "username" => $result["username"],
+            "fullname" => $result["fullname"],
+            "photo" => $result["photo"],
+            "views" => $result["views"]
+          ];
+        }
       } else {
         $errors[] = "profile not found";
       }
