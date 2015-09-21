@@ -13,8 +13,8 @@
 			$volunteer_info = $db["people"]->select("volunteers","*","user_id='".$user->id."'")[0];
 		}
 		if ($temp = json_decode($_POST["volunteer_data"])) {
-			echo "test"; die;
 			if ($volunteer_data = get_object_vars($temp)) {
+				echo "test"; die;
 				unset($_POST["profile_data"]);
 				$db["people"]->update("volunteers",$volunteer_data,"user_id=".$user->id);
 				$volunteer_info = $db["people"]->select("volunteers","*","user_id='".$user->id."'");
