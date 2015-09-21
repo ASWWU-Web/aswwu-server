@@ -16,7 +16,7 @@
 			if ($volunteer_data = get_object_vars($temp)) {
 				unset($_POST["profile_data"]);
 				$db["people"]->update("volunteers",$volunteer_data,"user_id=".$user->id);
-				$volunteer_info = $db["people"]->select("volunteers","*","user_id='".$user->id."'");
+				$volunteer_info = $db["people"]->select("volunteers","*","user_id='".$user->id."'")[0];
 			}
 		}
 	}
