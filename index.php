@@ -16,8 +16,10 @@
 
 	$current_year = 1516;
 
-  if (isset($_GET["wwuid"],$_GET["token"]) && $_GET["wwuid"] != "" && $_GET["token"] != "") {
-  	$user = new loggedInUser(json_decode(json_encode(["wwuid"=>$_GET["wwuid"],"token"=>$_GET["token"]])));
+  if (isset($_GET["token"]) && $_GET["token"] != "") {
+		$wwuid = substr($_GET["token"],0,7);
+		$token = substr($_GET["token"],7);
+  	$user = new loggedInUser(json_decode(json_encode(["wwuid"=>$wwuid,"token"=>$token])));
   	if (!$user->verify())
 			$errors[] = "invalid login";
 		if (isset($_GET["verify"])) {

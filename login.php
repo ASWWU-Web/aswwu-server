@@ -16,7 +16,6 @@
 		curl_close($ch);
 
 		$user = json_decode(substr($return,6,-7))->user;
-		// $user = json_decode(json_encode(["wwcid"=>"2000580","username"=>"brock.haugen","fullname"=>"Brock Haugen","status"=>"Student"]));
 
 		if (isset($user->wwcid)) {
 			$user->wwuid = $user->wwcid;
@@ -35,7 +34,6 @@
 			}
 
 			$user = $data["user"] = new loggedInUser($user);
-			//$data["profile"] = new Profile($result["id"]);
 		} else {
 			$errors[] = "invalid credentials";
 		}

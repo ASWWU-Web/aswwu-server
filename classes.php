@@ -71,6 +71,13 @@
       return $results;
     }
 
+    public function delete($table,$conditions) {
+      $conditions = $this->conditionString($conditions);
+      $query_string = "delete from ".$table.$conditions;
+      $results = $this->query($query_string);
+      return $results;
+    }
+
     public function insert($table,$data) {
       if (!isAssoc($data))
         return false;
@@ -119,8 +126,7 @@
       $user = $dbuser[0];
 
       foreach ($user as $key => $value)
-        if (!in_array($key,["auth_salt","auth_time"]))
-          $this->$key = $value;
+        $this->$key = $value;
 
       $photo = $db["people"]->select("profiles","wwuid,photo","user_id='".$this->id."'");
       if ($photo && isset($photo[0]))
@@ -150,8 +156,14 @@
       } else {
         $time = time();
         $salt = md5(uniqid(mt_rand(), true));
-        $db["people"]->update("users",["auth_salt"=>$salt,"auth_time"=>$time],["id"=>$this->id]);
-        return md5($time.$salt);
+        $id = uniqid();
+        $db["people"]->insert("tokens",[
+          "id"=>$id,
+          "wwuid"=>$this->wwuid,
+          "auth_salt"=>$salt,
+          "auth_time"=>$time
+        ]);
+        return $id.md5($time.$salt);
       }
     }
 
@@ -159,10 +171,14 @@
       global $db;
       if (!isset($this->id))
         return false;
-      $info = $db["people"]->select("users",["auth_salt","auth_time"],["id"=>$this->id])[0];
-      if ($this->token == md5($info["auth_time"].$info["auth_salt"]) && $info["auth_time"] >= time()-60*10) {
-        if (isset($_GET["verify"]))
+      $token_id = substr($this->token,0,13);
+      $hash = str_replace($token_id, "", $this->token);
+      $info = $db["people"]->select("tokens",["auth_salt","auth_time"],["id"=>$token_id])[0];
+      if ($hash == md5($info["auth_time"].$info["auth_salt"]) && $info["auth_time"] >= time()-60*15) {
+        if (isset($_GET["verify"])) {
           $this->token = $this->generate_token();
+          $db["people"]->delete("tokens","id='".$token_id."'");
+        }
         return true;
       } else
         return false;
