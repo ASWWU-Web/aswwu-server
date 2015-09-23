@@ -49,6 +49,9 @@
         $q[] = $p;
       }
       $q = implode(" AND ",$q);
+      if ($_GET["cmd"] == "search") {
+        $q .= " order by views DESC";
+      }
       return $q;
     }
 

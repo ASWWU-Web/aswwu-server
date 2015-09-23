@@ -220,6 +220,12 @@
 
       if ($result) {
         $result = $result[0];
+        if (isset($_GET["profile"]) && (!isset($user) || $result["wwuid"] != $user->wwuid)) {
+          $count = ($result["views"] != "" ? $result["views"]*1 : 0);
+          $count++;
+          $db["people"]->update("profiles",["views"=>$count],["id"=>$result["id"]]);
+        }
+
         if (isset($user) && $user->verify()) {
           if (isset($user->roles) && in_array("admin", $user->roles))
             $this->pn = 3;
