@@ -242,7 +242,7 @@
           unset($_POST["profile_data"]);
         }
 
-        if ($this->pn >= $result["privacy"]) {
+        if ($this->pn >= $result["privacy"] && !isset($_GET['list'])) {
           foreach ($this->view_levels[($this->pn+1)] as $column)
             unset($result[$column]);
           foreach ($result as $key => $value)

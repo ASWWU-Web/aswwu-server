@@ -49,7 +49,7 @@
         $q[] = $p;
       }
       $q = implode(" AND ",$q);
-      if ($_GET["cmd"] == "search") {
+      if ($_GET["cmd"] == "search" && !isset($_GET['list'])) {
         $q .= " order by views DESC";
       }
       return $q;
