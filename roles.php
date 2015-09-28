@@ -14,12 +14,17 @@ if (isset($user) && $user->verify()) {
 				if ($cmd == "roles") {
 					if (isset($_POST["newRole"],$_POST["username"])) {
 						$cRoles = $db["people"]->select("users",["roles"],["username"=>$_POST["username"]]);
-						$cRoles = explode(",", $cRoles[0]["roles"]);
-						$cRoles[] = $_POST["newRole"];
-						$cRoles = array_filter(array_unique($cRoles));
-						$cRoles = join(",",$cRoles);
-						$db["people"]->update("users",["roles"=>$cRoles],["username"=>$_POST["username"]]);
-						$data["response"] = "success";
+						if (isset($cRoles[0])) {
+							$username = strtolower(str_replace(" ",".",$_POST["username"]));
+							$cRoles = explode(",", $cRoles[0]["roles"]);
+							$cRoles[] = $_POST["newRole"];
+							$cRoles = array_filter(array_unique($cRoles));
+							$cRoles = join(",",$cRoles);
+							$db["people"]->update("users",["roles"=>$cRoles],["username"=>$username]);
+							$data["response"] = "success";
+						} else {
+							$errors[] = "Could not find a user with that name";
+						}
 					} else {
 						$errors[] = "Invalid post parameters";
 					}
