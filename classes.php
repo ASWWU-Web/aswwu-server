@@ -128,6 +128,8 @@
       foreach ($user as $key => $value)
         $this->$key = $value;
 
+      $this->roles = explode(",",$this->roles);
+
       $photo = $db["people"]->select("profiles","wwuid,photo","user_id='".$this->id."'");
       if ($photo && isset($photo[0]))
         $this->photo = $photo[0]["photo"];
@@ -227,7 +229,7 @@
         }
 
         if (isset($user) && $user->verify()) {
-          if (isset($user->roles) && in_array("admin", $user->roles))
+          if (in_array("administrator", $user->roles))
             $this->pn = 3;
           else if ($user->id == $result["user_id"])
             $this->pn = 2;
