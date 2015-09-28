@@ -1,16 +1,16 @@
 <?php
 
-if (isset($_GET["table"])) {
-	$table = $_GET["table"];
+if (isset($_GET["role"])) {
+	$role = $_GET["role"];
 } else {
-	$table = "administrator";
+	$role = "administrator";
 }
 
 if (isset($user) && $user->verify()) {
 	if (in_array($table, $user->roles) || in_array("administrator", $user->roles)) {
 		if (isset($_POST["cmd"])) {
 			$cmd = $_POST["cmd"];
-			if ($table == "administrator") {
+			if ($role == "administrator") {
 				if ($cmd == "roles") {
 					if (isset($_POST["newRole"],$_POST["username"])) {
 						$cRoles = $db["people"]->select("users",["roles"],["username"=>$_POST["username"]]);
