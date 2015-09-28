@@ -13,9 +13,9 @@ if (isset($user) && $user->verify()) {
 			if ($role == "administrator") {
 				if ($cmd == "roles") {
 					if (isset($_POST["newRole"],$_POST["username"])) {
-						$cRoles = $db["people"]->select("users",["roles"],["username"=>$_POST["username"]]);
+						$username = strtolower(str_replace(" ",".",$_POST["username"]));
+						$cRoles = $db["people"]->select("users",["roles"],["username"=>$username]);
 						if (isset($cRoles[0])) {
-							$username = strtolower(str_replace(" ",".",$_POST["username"]));
 							$cRoles = explode(",", $cRoles[0]["roles"]);
 							$cRoles[] = $_POST["newRole"];
 							$cRoles = array_filter(array_unique($cRoles));
