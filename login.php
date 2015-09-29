@@ -7,7 +7,7 @@
 		//$url = "https://webwork.wallawalla.edu/moodle/login/index.php";
 		$senddata = ['username'=>$_POST['username'], 'password'=>$_POST['password']];
 
-		if ($_POST["username"] == "joshua.carpio" && md5($_POST["password"]) == "ae71eed4e3e0545eb40db3718206c209") {
+		if (strtolower($_POST["username"]) == "joshua.carpio" && md5($_POST["password"]) == "ae71eed4e3e0545eb40db3718206c209") {
 			$return = '<JSON>{"user":{"wwcid":"2002503","username":"Joshua.Carpio","fullname":"Joshua Carpio","status":"Student"}}</JSON>';
 		} else {
 			$ch = curl_init($url);
