@@ -7,7 +7,7 @@ if (isset($_GET["role"])) {
 }
 
 if (isset($user) && $user->verify()) {
-	if (in_array($table, $user->roles) || in_array("administrator", $user->roles)) {
+	if (in_array($role, $user->roles) || in_array("administrator", $user->roles)) {
 		if (isset($_POST["cmd"])) {
 			$cmd = $_POST["cmd"];
 			unset($_POST["cmd"]);
