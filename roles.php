@@ -49,13 +49,14 @@ if (isset($user) && $user->verify()) {
 						$errors[] = "Invalid post parameters";
 					}
 				} else if ($cmd == "search") {
-					foreach ($_POST as $name => $value)
-						if ($value == "on") $_POST[$name] = 1;
-						else if ($value == "") unset($_POST[$name]);
-						else $_POST[$name] = strtolower($value);
-					if (count($_POST) == 0) $_POST = "";
+					$queryString = [];
+					foreach ($_POST as $name => $value) {
+						if ($value == "on") $queryString[] = "$name = '1'";
+						else if ($value != "") $queryString[] = "$name like '%$value%' COLLATE NOCASE";
+					}
+					$queryString = join(" and ",$queryString);
 
-					$r = $db["people"]->select("volunteers","user_id",$_POST);
+					$r = $db["people"]->select("volunteers","user_id",$queryString);
 					if (!$r) $errors[] = "No results found";
 					foreach ($r as $row) {
 						$result = $db["people"]->select("profiles","username,fullname,email",["user_id"=>$row["user_id"]])[0];
