@@ -24,7 +24,7 @@ if (isset($user) && $user->verify()) {
 							$db["people"]->update("users",["roles"=>$cRoles],["username"=>$username]);
 							$data["response"] = "success";
 						} else {
-							$errors[] = "Could not find a user with that name";
+							$errors[] = "Could not find a user(s) with that name";
 						}
 					} else {
 						$errors[] = "Invalid post parameters";
