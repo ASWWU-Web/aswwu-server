@@ -265,6 +265,7 @@
     public function update($data) {
       global $db, $user, $errors;
       if ($this->pn >= 2 && isset($user) && $user->verify()) {
+        if (!strpos($data["photo"], $user->wwuid)) $data["photo"] = "";
         $response = $db[$this->dbname]->update($this->tablename,$data,"user_id='".$user->id."'");
         if ($response) {
           return true;
