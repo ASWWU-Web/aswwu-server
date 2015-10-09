@@ -44,6 +44,8 @@
               $p = "(username LIKE '%".$value."%' OR fullname LIKE '%".$value."%' COLLATE NOCASE)";
             }
           }
+        } else if (in_array($key,["gender"])) {
+          $p = $key." = '".$value."' COLLATE NOCASE";
         } else
           $p = $key." LIKE '%".$value."%' COLLATE NOCASE";
         $q[] = $p;
