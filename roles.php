@@ -59,6 +59,27 @@ if (isset($user) && $user->verify()) {
 					if (isset($_GET["getData"])) {
 						$data["results"] = $db["people"]->select("volunteers","*",$queryString);
 						$data["query"] = $queryString;
+					} else if (isset($_GET["viewPrintOut"])) {
+						$results = $db["people"]->select("volunteers","*",$queryString);
+						echo "<table><tr><th>Photo</th><th>Name</th><th>Class Standing</th><th>Major(s)</th><th>Email</th><th>Phone Number</th><th>Volunteer Data</th></tr>";
+						foreach ($results as $row) {
+							$volunteer = [];
+							foreach ($row as $key => $value)
+								if ($value !== "" && $value !== "0" && !in_array($key, ["id","user_id","wwuid","updated_at"]))
+									$volunteer[$key] = ($value == "1" ? "True" : $value);
+							$profile = $db["people"]->select("profiles","photo,username,fullname,class_standing,majors,email,phone",["user_id"=>$row["user_id"]])[0];
+							echo "<tr><td><img style='height: 5em;' src='https://aswwu.com/media/img-sm/".($profile['photo'] == "" ? "images/mask_unknown.png" : $profile["photo"])."'></td>";
+							echo "<td>".(strlen($profile["fullname"]) > 5 ? $profile["fullname"] : $profile["username"])."</td>";
+							echo "<td>".$profile["class_standing"]."</td>";
+							echo "<td>".$profile["majors"]."</td>";
+							echo "<td>".$profile["email"]."</td>";
+							echo "<td>".$profile["phone"]."</td>";
+							echo "<td>";
+							print_r($volunteer);
+							echo "</td></tr>";
+						}
+						echo "</table>";
+						die;
 					} else {
 						$r = $db["people"]->select("volunteers","user_id",$queryString);
 						if (!$r) $errors[] = "No results found";
