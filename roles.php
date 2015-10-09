@@ -56,13 +56,18 @@ if (isset($user) && $user->verify()) {
 					}
 					$queryString = join(" and ",$queryString);
 
-					$r = $db["people"]->select("volunteers","user_id",$queryString);
-					if (!$r) $errors[] = "No results found";
-					foreach ($r as $row) {
-						$result = $db["people"]->select("profiles","username,fullname,email",["user_id"=>$row["user_id"]])[0];
-						if ($result["email"] == "")
-							$result["email"] = $result["username"]."@wallawalla.edu";
-						$data["results"][] = $result;
+					if (isset($_GET["getData"])) {
+						$data["results"] = $db["people"]->select("volunteers","*",$queryString);
+						$data["query"] = $queryString;
+					} else {
+						$r = $db["people"]->select("volunteers","user_id",$queryString);
+						if (!$r) $errors[] = "No results found";
+						foreach ($r as $row) {
+							$result = $db["people"]->select("profiles","username,fullname,email",["user_id"=>$row["user_id"]])[0];
+							if ($result["email"] == "")
+								$result["email"] = $result["username"]."@wallawalla.edu";
+							$data["results"][] = $result;
+						}
 					}
 				}
 			}
