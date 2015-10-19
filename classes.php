@@ -176,7 +176,7 @@
       $token_id = substr($this->token,0,13);
       $hash = str_replace($token_id, "", $this->token);
       $info = $db["people"]->select("tokens",["auth_salt","auth_time"],["id"=>$token_id])[0];
-      if ($hash == md5($info["auth_time"].$info["auth_salt"]) && $info["auth_time"] >= time()-60*15) {
+      if ($hash == md5($info["auth_time"].$info["auth_salt"]) && $info["auth_time"] >= time()-60*30) {
         if (isset($_GET["verify"])) {
           $this->token = $this->generate_token();
           $db["people"]->delete("tokens","id='".$token_id."'");
