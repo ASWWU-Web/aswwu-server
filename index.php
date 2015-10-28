@@ -45,6 +45,7 @@
 	if (!isset($data) && !isset($errors)) $errors[] = "no valid response";
 	if (isset($errors)) $data["errors"] = $errors;
 
+	header('Content-Type: application/json');
 	echo json_encode($data);
 
 ?>
